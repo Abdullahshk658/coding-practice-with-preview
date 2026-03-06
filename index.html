@@ -107,10 +107,7 @@
     ============================================================ */
     header {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 32px;
-      height: 58px;
+      flex-direction: column;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
       backdrop-filter: blur(16px);
@@ -119,6 +116,29 @@
       flex-shrink: 0;
       box-shadow: var(--shadow-sm);
     }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 52px;
+      flex-shrink: 0;
+    }
+    .header-controls {
+      display: none;
+      align-items: center;
+      gap: 0;
+      flex-wrap: nowrap;
+      padding: 0 8px;
+      min-height: 44px;
+      border-top: 1px solid var(--border);
+      background: var(--surface2);
+      overflow-x: auto;
+    }
+    .header-controls.visible { display: flex; }
+    /* scrollbar for header controls */
+    .header-controls::-webkit-scrollbar { height: 3px; }
+    .header-controls::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
     .logo {
       font-family: var(--sans); font-weight: 800; font-size: 1.35rem;
@@ -209,9 +229,9 @@
 
     .main-wrap {
       flex: 1; display: flex; flex-direction: column;
-      padding: 20px 28px 24px;
+      padding: 14px 20px 16px;
       max-width: 1800px; width: 100%; margin: 0 auto;
-      gap: 14px;
+      gap: 10px;
     }
 
     /* ============================================================
@@ -226,11 +246,15 @@
     }
     .control-group {
       display: flex; align-items: center; gap: 8px;
-      padding: 4px 10px;
+      padding: 6px 12px;
       border-right: 1px solid var(--border);
       position: relative;
+      flex-shrink: 0;
     }
     .control-group:last-of-type { border-right: none; }
+    .header-controls .spacer { flex: 1; min-width: 8px; }
+    .header-controls .preview-controls { display:flex; align-items:center; gap:6px; }
+    .header-controls .text-style-tabs { display:flex; gap:3px; }
     .control-label {
       font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em;
       text-transform: uppercase; color: var(--muted); white-space: nowrap;
@@ -322,12 +346,12 @@
       transition: border-color 0.3s, box-shadow 0.3s, background var(--transition);
     }
     .panel:focus-within {
-      border-color: var(--border2);
-      box-shadow: 0 0 0 1px rgba(0,229,255,0.06), var(--shadow-md);
+      border-color: rgba(0,229,255,0.25);
+      box-shadow: 0 0 0 2px rgba(0,229,255,0.07), var(--shadow-md);
     }
     .panel-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 9px 16px; border-bottom: 1px solid var(--border);
+      padding: 10px 18px; border-bottom: 1px solid var(--border);
       background: var(--surface2); flex-shrink: 0;
     }
     .panel-title {
@@ -355,23 +379,26 @@
 
     .panel-footer {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 5px 16px; border-top: 1px solid var(--border);
+      padding: 6px 18px; border-top: 1px solid var(--border);
       background: var(--surface2); font-family: var(--mono);
       font-size: 0.67rem; color: var(--muted2); flex-shrink: 0;
+      letter-spacing: 0.02em;
     }
 
     .editor-ta {
-      flex: 1; width: 100%; padding: 15px 18px;
+      flex: 1; width: 100%; padding: 18px 22px;
       background: transparent; border: none; outline: none; resize: none;
-      font-family: var(--mono); font-size: 14px; line-height: 1.78;
-      color: var(--text); caret-color: var(--accent); tab-size: 2;
+      font-family: var(--mono); font-size: 13.5px; line-height: 1.9;
+      color: var(--text); caret-color: var(--accent); tab-size: 4;
+      letter-spacing: 0.015em; word-spacing: 0.05em;
     }
-    .editor-ta::placeholder { color: var(--muted2); font-style: italic; }
+    .editor-ta::placeholder { color: var(--muted2); font-style: italic; font-size: 13px; }
 
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::selection { background: rgba(0,229,255,0.18); color: inherit; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--muted2); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
     /* ============================================================
        PAGE 1 — PRACTICE EDITOR
@@ -382,25 +409,28 @@
     }
     .ref-display-wrap { flex: 1; position: relative; overflow: hidden; }
     #ref-display {
-      position: absolute; inset: 0; padding: 15px 18px;
-      font-family: var(--mono); font-size: 14px; line-height: 1.78;
+      position: absolute; inset: 0; padding: 18px 22px;
+      font-family: var(--mono); font-size: 13.5px; line-height: 1.9;
       color: var(--text); white-space: pre-wrap; word-break: break-word;
       overflow-y: auto; opacity: 0.15; filter: blur(0);
+      letter-spacing: 0.015em;
       transition: opacity 0.4s, filter 0.4s;
       pointer-events: none; user-select: none;
     }
     .typing-wrap { flex: 1; position: relative; overflow: hidden; }
     #diff-overlay {
-      position: absolute; inset: 0; padding: 15px 18px;
-      font-family: var(--mono); font-size: 14px; line-height: 1.78;
+      position: absolute; inset: 0; padding: 18px 22px;
+      font-family: var(--mono); font-size: 13.5px; line-height: 1.9;
       white-space: pre-wrap; word-break: break-word; overflow: hidden;
+      letter-spacing: 0.015em;
       pointer-events: none; user-select: none; z-index: 2; color: transparent;
     }
     #typing-area {
       position: absolute; inset: 0; z-index: 3; width:100%; height:100%;
-      padding: 15px 18px; background: transparent; border: none; outline: none; resize: none;
-      font-family: var(--mono); font-size: 14px; line-height: 1.78;
-      color: var(--text); caret-color: var(--accent); tab-size: 2;
+      padding: 18px 22px; background: transparent; border: none; outline: none; resize: none;
+      font-family: var(--mono); font-size: 13.5px; line-height: 1.9;
+      color: var(--text); caret-color: var(--accent); tab-size: 4;
+      letter-spacing: 0.015em;
     }
     #typing-area::placeholder { color: var(--muted2); font-style: italic; }
     .diff-correct { background: rgba(0,230,118,0.13); }
@@ -425,8 +455,8 @@
     .fill-editor-panel { flex: 1; min-height: 0; }
     .fill-editor-body { flex: 1; position: relative; overflow: hidden; }
     #fm-ghost-layer {
-      position: absolute; inset: 0; padding: 15px 18px;
-      font-family: var(--mono); font-size: 14px; line-height: 1.78;
+      position: absolute; inset: 0; padding: 18px 22px;
+      font-family: var(--mono); font-size: 13.5px; line-height: 1.9; letter-spacing: 0.015em;
       white-space: pre-wrap; word-break: break-word; overflow: hidden;
       pointer-events: none; user-select: none; z-index: 1;
     }
@@ -437,8 +467,9 @@
     @keyframes flash-wrong { 0%{opacity:1;color:var(--warn)} 60%{opacity:0.8} 100%{opacity:1} }
     #fm-typing-area {
       position: absolute; inset: 0; z-index: 3; width:100%; height:100%;
-      padding: 15px 18px; background: transparent; border: none; outline: none; resize: none;
-      font-family: var(--mono); font-size: 14px; line-height: 1.78;
+      padding: 18px 22px; background: transparent; border: none; outline: none; resize: none;
+      font-family: var(--mono); font-size: 13.5px; line-height: 1.9; letter-spacing: 0.015em;
+      color: var(--text); caret-color: var(--accent); tab-size: 4;
       color: var(--text); caret-color: #a78bfa; tab-size: 2;
     }
     #fm-typing-area::placeholder { color: var(--muted2); font-style: italic; }
@@ -501,7 +532,7 @@
 
     .line-numbers {
       padding: 15px 0 15px 10px;
-      font-family: var(--mono); font-size: 13px; line-height: 1.78;
+      font-family: var(--mono); font-size: 13px; line-height: 1.85;
       color: var(--muted2); background: var(--bg);
       border-right: 1px solid var(--border);
       user-select: none; pointer-events: none;
@@ -513,8 +544,8 @@
     .cp-highlight-mirror {
       position: absolute;
       top: 0; left: 44px; right: 0; bottom: 0;
-      padding: 15px 18px;
-      font-family: var(--mono); font-size: 13px; line-height: 1.78;
+      padding: 16px 20px;
+      font-family: var(--mono); font-size: 13px; line-height: 1.85; letter-spacing: 0.012em;
       white-space: pre; overflow: hidden; tab-size: 2;
       pointer-events: none; user-select: none;
       z-index: 1;
@@ -524,9 +555,9 @@
     .cp-textarea {
       position: absolute;
       top: 0; left: 44px; right: 0; bottom: 0;
-      padding: 15px 18px;
+      padding: 16px 20px;
       background: transparent; border: none; outline: none; resize: none;
-      font-family: var(--mono); font-size: 13px; line-height: 1.78;
+      font-family: var(--mono); font-size: 13px; line-height: 1.85; letter-spacing: 0.012em;
       color: rgba(226,228,236,0.95); caret-color: #fb923c;
       tab-size: 2; white-space: pre; overflow: auto;
       z-index: 2;
@@ -685,8 +716,8 @@
     .cp-ghost-layer {
       position: absolute;
       top: 0; left: 44px; right: 0; bottom: 0;
-      padding: 15px 18px;
-      font-family: var(--mono); font-size: 13px; line-height: 1.78;
+      padding: 16px 20px;
+      font-family: var(--mono); font-size: 13px; line-height: 1.85; letter-spacing: 0.012em;
       white-space: pre; overflow: hidden; tab-size: 2;
       pointer-events: none; user-select: none;
       z-index: 1;
@@ -894,14 +925,15 @@
     ============================================================ */
     #code-tooltip {
       position: fixed;
-      z-index: 9000;
-      max-width: 320px;
-      min-width: 200px;
+      z-index: 9999;
+      max-width: 340px;
+      min-width: 180px;
       pointer-events: none;
       opacity: 0;
-      transform: translateY(6px) scale(0.97);
-      transition: opacity 0.15s ease, transform 0.15s ease;
+      transform: translateY(5px) scale(0.96);
+      transition: opacity 0.08s ease, transform 0.08s ease;
       font-family: var(--mono);
+      filter: drop-shadow(0 4px 20px rgba(0,0,0,0.4));
     }
     #code-tooltip.visible {
       opacity: 1;
@@ -909,19 +941,20 @@
     }
     .tooltip-inner {
       background: var(--surface);
-      border: 1px solid var(--border2);
+      border: 1px solid rgba(0,229,255,0.15);
       border-radius: 10px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
       overflow: hidden;
     }
     [data-theme="light"] .tooltip-inner {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+      border: 1px solid rgba(0,120,200,0.2);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9);
     }
     .tooltip-header {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px 6px;
+      padding: 9px 14px 7px;
       border-bottom: 1px solid var(--border);
       background: var(--surface2);
     }
@@ -939,6 +972,7 @@
     .tooltip-kind-badge.js    { background: rgba(251,191,36,0.13); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
     .tooltip-kind-badge.kw    { background: rgba(167,139,250,0.14); color: #a78bfa; border: 1px solid rgba(167,139,250,0.25); }
     .tooltip-kind-badge.ai    { background: rgba(34,197,94,0.13);  color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+    .tooltip-kind-badge.bs    { background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); }
     [data-theme="light"] .tooltip-kind-badge.html  { background: rgba(249,115,22,0.1);  color: #d9600a; }
     [data-theme="light"] .tooltip-kind-badge.css   { background: rgba(56,189,248,0.1);  color: #0284c7; }
     [data-theme="light"] .tooltip-kind-badge.js    { background: rgba(202,138,4,0.12);  color: #b45309; }
@@ -954,15 +988,17 @@
       white-space: nowrap;
     }
     .tooltip-body {
-      padding: 9px 12px 8px;
+      padding: 10px 14px 10px;
     }
     .tooltip-desc {
-      font-size: 0.72rem;
-      line-height: 1.55;
-      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.6;
+      color: var(--text);
       margin-bottom: 0;
+      font-family: var(--sans);
+      font-weight: 400;
     }
-    [data-theme="light"] .tooltip-desc { color: #4b5563; }
+    [data-theme="light"] .tooltip-desc { color: #374151; }
     .tooltip-example {
       margin-top: 7px;
       background: var(--bg);
@@ -992,8 +1028,9 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding: 4px 12px 6px;
+      padding: 5px 14px 6px;
       border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.08);
     }
     .tooltip-shortcut {
       font-size: 0.58rem;
@@ -1069,34 +1106,41 @@
      HEADER
 ============================================================ -->
 <header>
-  <div class="logo">
-    <div class="logo-dot"></div>
-    MemType
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      MemType
+    </div>
+
+    <nav class="page-nav" aria-label="Mode">
+      <button class="page-tab active" data-page="editor">Practice Editor</button>
+      <button class="page-tab"        data-page="fill">Fill Mode</button>
+      <button class="page-tab"        data-page="preview">Code Preview</button>
+    </nav>
+
+    <div class="header-right">
+      <div id="hdr-editor-stats" style="display:flex;gap:8px;align-items:center;">
+        <div class="stat-chip">Words <span class="stat-val" id="hdr-words">0</span></div>
+        <div class="stat-chip">Progress <span class="stat-val" id="hdr-progress">0%</span></div>
+        <div class="stat-chip">Accuracy <span class="stat-val" id="hdr-accuracy">—</span></div>
+      </div>
+      <div id="hdr-fill-stats" style="display:none;gap:8px;align-items:center;">
+        <div class="stat-chip fill-stat">Progress <span class="stat-val" id="fm-hdr-progress">0%</span></div>
+        <div class="stat-chip fill-stat">Accuracy <span class="stat-val" id="fm-hdr-accuracy">—</span></div>
+      </div>
+      <div id="hdr-preview-stats" style="display:none;gap:8px;align-items:center;">
+        <div class="stat-chip prev-stat">Lines <span class="stat-val" id="cp-hdr-lines">0</span></div>
+        <div class="stat-chip prev-stat">Errors <span class="stat-val" id="cp-hdr-errors">0</span></div>
+      </div>
+      <button class="theme-toggle has-tooltip" id="theme-toggle-btn" data-tip="Toggle light/dark mode" aria-label="Toggle theme">🌙</button>
+      <button class="btn-reset" id="btn-reset">⟳ Reset</button>
+    </div>
   </div>
 
-  <nav class="page-nav" aria-label="Mode">
-    <button class="page-tab active" data-page="editor">Practice Editor</button>
-    <button class="page-tab"        data-page="fill">Fill Mode</button>
-    <button class="page-tab"        data-page="preview">Code Preview</button>
-  </nav>
-
-  <div class="header-right">
-    <div id="hdr-editor-stats" style="display:flex;gap:8px;align-items:center;">
-      <div class="stat-chip">Words <span class="stat-val" id="hdr-words">0</span></div>
-      <div class="stat-chip">Progress <span class="stat-val" id="hdr-progress">0%</span></div>
-      <div class="stat-chip">Accuracy <span class="stat-val" id="hdr-accuracy">—</span></div>
-    </div>
-    <div id="hdr-fill-stats" style="display:none;gap:8px;align-items:center;">
-      <div class="stat-chip fill-stat">Progress <span class="stat-val" id="fm-hdr-progress">0%</span></div>
-      <div class="stat-chip fill-stat">Accuracy <span class="stat-val" id="fm-hdr-accuracy">—</span></div>
-    </div>
-    <div id="hdr-preview-stats" style="display:none;gap:8px;align-items:center;">
-      <div class="stat-chip prev-stat">Lines <span class="stat-val" id="cp-hdr-lines">0</span></div>
-      <div class="stat-chip prev-stat">Errors <span class="stat-val" id="cp-hdr-errors">0</span></div>
-    </div>
-    <button class="theme-toggle has-tooltip" id="theme-toggle-btn" data-tip="Toggle light/dark mode" aria-label="Toggle theme">🌙</button>
-    <button class="btn-reset" id="btn-reset">⟳ Reset</button>
-  </div>
+  <!-- Per-page controls injected here by JS -->
+  <div class="header-controls" id="hdr-controls-editor"></div>
+  <div class="header-controls" id="hdr-controls-fill"></div>
+  <div class="header-controls" id="hdr-controls-preview"></div>
 </header>
 
 <!-- ============================================================
@@ -1104,7 +1148,8 @@
 ============================================================ -->
 <div class="page active" id="page-editor">
   <div class="main-wrap">
-    <div class="controls-bar">
+    <!-- Controls moved to header -->
+    <div id="editor-controls-placeholder" style="display:none;">
       <div class="control-group has-tooltip" data-tip="Ghost opacity: how visible is the reference text">
         <span class="control-label">👻 Ghost</span>
         <div class="slider-wrap">
@@ -1182,7 +1227,8 @@
 ============================================================ -->
 <div class="page" id="page-fill">
   <div class="main-wrap">
-    <div class="controls-bar">
+    <!-- Fill controls moved to header -->
+    <div id="fill-controls-placeholder" style="display:none;">
       <div class="control-group has-tooltip" data-tip="Ghost text opacity">
         <span class="control-label" style="color:#a78bfa;">👻 Ghost</span>
         <div class="slider-wrap">
@@ -1278,7 +1324,8 @@
 <div class="page" id="page-preview">
   <div class="main-wrap">
 
-    <div class="controls-bar">
+    <!-- Preview controls moved to header -->
+    <div id="preview-controls-placeholder" style="display:none;">
       <div class="control-group has-tooltip" data-tip="Auto-run preview after a delay">
         <span class="control-label">Auto-run</span>
         <label class="toggle toggle-amber">
@@ -1308,6 +1355,7 @@
       </div>
       <div class="preview-controls">
         <button class="cp-btn amber" id="cp-run-btn">▶ Run</button>
+        <button class="cp-btn" id="cp-format-btn" title="Format code like VS Code (Ctrl+Shift+F)">⬡ Format</button>
         <button class="cp-btn" id="cp-clear-btn">✕ Clear All</button>
         <button class="intellisense-toggle active" id="intellisense-toggle-btn" title="Toggle IntelliSense tooltips (Ctrl+I)">
           <span class="intellisense-dot"></span> IntelliSense
@@ -1556,6 +1604,33 @@ const hdrPrev   = document.getElementById('hdr-preview-stats');
 
 let activePage = 'editor';
 
+/* ── Move controls into header sub-bar ── */
+function mountHeaderControls(page) {
+  const hdrEditor  = document.getElementById('hdr-controls-editor');
+  const hdrFill    = document.getElementById('hdr-controls-fill');
+  const hdrPreview = document.getElementById('hdr-controls-preview');
+  const srcEditor  = document.getElementById('editor-controls-placeholder');
+  const srcFill    = document.getElementById('fill-controls-placeholder');
+  const srcPreview = document.getElementById('preview-controls-placeholder');
+
+  // Move children from placeholder into header bar (once)
+  function transfer(src, dst) {
+    if (!src || !dst || dst.dataset.mounted) return;
+    Array.from(src.children).forEach(el => dst.appendChild(el));
+    dst.dataset.mounted = '1';
+  }
+  transfer(srcEditor,  hdrEditor);
+  transfer(srcFill,    hdrFill);
+  transfer(srcPreview, hdrPreview);
+
+  // Show only the active page's controls
+  hdrEditor.classList.toggle('visible',  page === 'editor');
+  hdrFill.classList.toggle('visible',    page === 'fill');
+  hdrPreview.classList.toggle('visible', page === 'preview');
+}
+// Mount on load
+mountHeaderControls('editor');
+
 pageTabs.forEach(tab => {
   tab.addEventListener('click', () => {
     const target = tab.dataset.page;
@@ -1566,6 +1641,7 @@ pageTabs.forEach(tab => {
     hdrEditor.style.display = target === 'editor'  ? 'flex' : 'none';
     hdrFill.style.display   = target === 'fill'    ? 'flex' : 'none';
     hdrPrev.style.display   = target === 'preview' ? 'flex' : 'none';
+    mountHeaderControls(target);
   });
 });
 
@@ -2764,6 +2840,9 @@ tick(); setInterval(tick,1000);`
   let enabled      = true;
   let hideTimer    = null;
   let currentWord  = '';
+  let lastMouseX   = 0;
+  let lastMouseY   = 0;
+  document.addEventListener('mousemove', e => { lastMouseX = e.clientX; lastMouseY = e.clientY; }, { passive: true });
   const tooltip    = document.getElementById('code-tooltip');
   const ttBadge    = document.getElementById('tt-badge');
   const ttKeyword  = document.getElementById('tt-keyword');
@@ -2970,16 +3049,268 @@ tick(); setInterval(tick,1000);`
     replace:      { kind:'js', badge:'JS', desc:'Returns a new string with matched content replaced. Accepts a string or regex as the first argument. Use replaceAll or /g flag for global replace.', example:"'hello world'.replace('world', 'JS');\n'aabbcc'.replace(/b/g, 'X');" },
     trim:         { kind:'js', badge:'JS', desc:'Removes whitespace from both ends of a string. trimStart() and trimEnd() trim individual sides. Does not modify the original.', example:"'  hello  '.trim()  // 'hello'" },
     parseInt:     { kind:'js', badge:'JS', desc:'Parses a string and returns an integer. Always specify the radix (base): 10 for decimal. Returns NaN if parsing fails.', example:"parseInt('42', 10)     // 42\nparseInt('0xFF', 16)  // 255" },
+    /* ── BOOTSTRAP LAYOUT ── */
+    container:       { kind:'bs', badge:'BS', desc:'Creates a centered, responsive fixed-width container. Adds horizontal padding. Use container-fluid for full-width.' },
+    'container-fluid': { kind:'bs', badge:'BS', desc:'Full-width container that spans the entire viewport width at every screen size.' },
+    row:             { kind:'bs', badge:'BS', desc:'Creates a horizontal row in the Bootstrap grid. Contains columns. Uses negative margins to offset column padding.' },
+    col:             { kind:'bs', badge:'BS', desc:'Auto-sized column that fills available space in a row.' },
+    'col-auto':      { kind:'bs', badge:'BS', desc:'Column sized to its natural content width.' },
+    'col-1':         { kind:'bs', badge:'BS', desc:'Column taking 1/12 (about 8%) of the row width.' },
+    'col-2':         { kind:'bs', badge:'BS', desc:'Column taking 2/12 (about 17%) of the row width.' },
+    'col-3':         { kind:'bs', badge:'BS', desc:'Column taking 3/12 (25%) — a quarter-width column.' },
+    'col-4':         { kind:'bs', badge:'BS', desc:'Column taking 4/12 (33%) — a third-width column.' },
+    'col-6':         { kind:'bs', badge:'BS', desc:'Column taking 6/12 (50%) — a half-width column.' },
+    'col-8':         { kind:'bs', badge:'BS', desc:'Column taking 8/12 (67%) — two-thirds-width column.' },
+    'col-12':        { kind:'bs', badge:'BS', desc:'Column taking full width. Stacks vertically.' },
+    'col-sm-6':      { kind:'bs', badge:'BS', desc:'Half-width column on small screens (≥576px) and up.' },
+    'col-md-4':      { kind:'bs', badge:'BS', desc:'Third-width column on medium screens (≥768px) and up.' },
+    'col-md-6':      { kind:'bs', badge:'BS', desc:'Half-width column on medium screens (≥768px) and up. Stacks on mobile.' },
+    'col-md-8':      { kind:'bs', badge:'BS', desc:'Two-thirds-width column on medium screens (≥768px) and up.' },
+    'col-lg-4':      { kind:'bs', badge:'BS', desc:'Third-width column on large screens (≥992px) and up.' },
+    'col-lg-6':      { kind:'bs', badge:'BS', desc:'Half-width column on large screens (≥992px) and up.' },
+    'col-xl-3':      { kind:'bs', badge:'BS', desc:'Quarter-width column on extra-large screens (≥1200px) and up.' },
+    /* ── BOOTSTRAP DISPLAY / FLEX ── */
+    'd-none':        { kind:'bs', badge:'BS', desc:'Hides the element completely (display:none).' },
+    'd-block':       { kind:'bs', badge:'BS', desc:'Sets display to block.' },
+    'd-inline':      { kind:'bs', badge:'BS', desc:'Sets display to inline.' },
+    'd-inline-block':{ kind:'bs', badge:'BS', desc:'Sets display to inline-block.' },
+    'd-flex':        { kind:'bs', badge:'BS', desc:'Applies CSS flexbox to the element. Use with flex utilities like justify-content and align-items.' },
+    'd-grid':        { kind:'bs', badge:'BS', desc:'Applies CSS grid to the element.' },
+    'd-sm-flex':     { kind:'bs', badge:'BS', desc:'Flexbox display on small screens and up.' },
+    'd-md-flex':     { kind:'bs', badge:'BS', desc:'Flexbox display on medium screens and up.' },
+    'd-lg-none':     { kind:'bs', badge:'BS', desc:'Hides element on large screens and up.' },
+    'd-md-block':    { kind:'bs', badge:'BS', desc:'Block display on medium screens and up.' },
+    'flex-row':      { kind:'bs', badge:'BS', desc:'Lays out flex children in a horizontal row (default direction).' },
+    'flex-column':   { kind:'bs', badge:'BS', desc:'Lays out flex children in a vertical column.' },
+    'flex-wrap':     { kind:'bs', badge:'BS', desc:'Allows flex children to wrap onto multiple lines.' },
+    'flex-nowrap':   { kind:'bs', badge:'BS', desc:'Prevents flex children from wrapping.' },
+    'flex-fill':     { kind:'bs', badge:'BS', desc:'Makes a flex item grow to fill available space.' },
+    'flex-grow-1':   { kind:'bs', badge:'BS', desc:'Allows a flex item to grow and fill available space.' },
+    'flex-shrink-0': { kind:'bs', badge:'BS', desc:'Prevents a flex item from shrinking.' },
+    'justify-content-start':   { kind:'bs', badge:'BS', desc:'Aligns flex/grid items to the start (left).' },
+    'justify-content-end':     { kind:'bs', badge:'BS', desc:'Aligns flex/grid items to the end (right).' },
+    'justify-content-center':  { kind:'bs', badge:'BS', desc:'Centers flex/grid items horizontally.' },
+    'justify-content-between': { kind:'bs', badge:'BS', desc:'Spreads items with space between them, none at edges.' },
+    'justify-content-around':  { kind:'bs', badge:'BS', desc:'Spreads items with equal space around each.' },
+    'justify-content-evenly':  { kind:'bs', badge:'BS', desc:'Spreads items with perfectly equal space between all items.' },
+    'align-items-start':   { kind:'bs', badge:'BS', desc:'Aligns flex/grid items to the top of the container.' },
+    'align-items-end':     { kind:'bs', badge:'BS', desc:'Aligns flex/grid items to the bottom of the container.' },
+    'align-items-center':  { kind:'bs', badge:'BS', desc:'Vertically centers flex/grid items.' },
+    'align-items-stretch': { kind:'bs', badge:'BS', desc:'Stretches flex/grid items to fill container height (default).' },
+    'align-self-center':   { kind:'bs', badge:'BS', desc:'Vertically centers a single flex item, overriding the group alignment.' },
+    /* ── BOOTSTRAP SPACING ── */
+    'm-0':  { kind:'bs', badge:'BS', desc:'Removes all margins.' },
+    'm-1':  { kind:'bs', badge:'BS', desc:'Adds 0.25rem margin on all sides.' },
+    'm-2':  { kind:'bs', badge:'BS', desc:'Adds 0.5rem margin on all sides.' },
+    'm-3':  { kind:'bs', badge:'BS', desc:'Adds 1rem margin on all sides.' },
+    'm-4':  { kind:'bs', badge:'BS', desc:'Adds 1.5rem margin on all sides.' },
+    'm-5':  { kind:'bs', badge:'BS', desc:'Adds 3rem margin on all sides.' },
+    'mx-auto': { kind:'bs', badge:'BS', desc:'Centers a block element horizontally by setting left and right margins to auto.' },
+    'my-3': { kind:'bs', badge:'BS', desc:'Adds 1rem margin to top and bottom.' },
+    'mt-3': { kind:'bs', badge:'BS', desc:'Adds 1rem top margin.' },
+    'mb-3': { kind:'bs', badge:'BS', desc:'Adds 1rem bottom margin.' },
+    'ms-3': { kind:'bs', badge:'BS', desc:'Adds 1rem start (left in LTR) margin.' },
+    'me-3': { kind:'bs', badge:'BS', desc:'Adds 1rem end (right in LTR) margin.' },
+    'p-0':  { kind:'bs', badge:'BS', desc:'Removes all padding.' },
+    'p-1':  { kind:'bs', badge:'BS', desc:'Adds 0.25rem padding on all sides.' },
+    'p-2':  { kind:'bs', badge:'BS', desc:'Adds 0.5rem padding on all sides.' },
+    'p-3':  { kind:'bs', badge:'BS', desc:'Adds 1rem padding on all sides.' },
+    'p-4':  { kind:'bs', badge:'BS', desc:'Adds 1.5rem padding on all sides.' },
+    'p-5':  { kind:'bs', badge:'BS', desc:'Adds 3rem padding on all sides.' },
+    'px-3': { kind:'bs', badge:'BS', desc:'Adds 1rem padding left and right.' },
+    'py-3': { kind:'bs', badge:'BS', desc:'Adds 1rem padding top and bottom.' },
+    'pt-4': { kind:'bs', badge:'BS', desc:'Adds 1.5rem top padding.' },
+    'pb-4': { kind:'bs', badge:'BS', desc:'Adds 1.5rem bottom padding.' },
+    /* ── BOOTSTRAP BUTTONS ── */
+    btn:             { kind:'bs', badge:'BS', desc:'Base Bootstrap button class. Always combine with a variant like btn-primary.' },
+    'btn-primary':   { kind:'bs', badge:'BS', desc:'Blue filled button using Bootstrap\'s primary brand color.' },
+    'btn-secondary': { kind:'bs', badge:'BS', desc:'Grey filled button for secondary actions.' },
+    'btn-success':   { kind:'bs', badge:'BS', desc:'Green button indicating a positive or successful action.' },
+    'btn-danger':    { kind:'bs', badge:'BS', desc:'Red button for destructive or warning actions.' },
+    'btn-warning':   { kind:'bs', badge:'BS', desc:'Yellow/orange button for caution actions.' },
+    'btn-info':      { kind:'bs', badge:'BS', desc:'Teal/cyan button for informational actions.' },
+    'btn-light':     { kind:'bs', badge:'BS', desc:'Light-colored button with a subtle border.' },
+    'btn-dark':      { kind:'bs', badge:'BS', desc:'Dark button with white text.' },
+    'btn-outline-primary':   { kind:'bs', badge:'BS', desc:'Transparent button with a blue border and text. Fills on hover.' },
+    'btn-outline-secondary': { kind:'bs', badge:'BS', desc:'Transparent button with a grey border and text.' },
+    'btn-outline-danger':    { kind:'bs', badge:'BS', desc:'Transparent button with a red border. Use for destructive confirmations.' },
+    'btn-sm':  { kind:'bs', badge:'BS', desc:'Small button — reduces padding and font size.' },
+    'btn-lg':  { kind:'bs', badge:'BS', desc:'Large button — increases padding and font size.' },
+    'btn-link':{ kind:'bs', badge:'BS', desc:'Makes a button look like a hyperlink while keeping button behavior.' },
+    /* ── BOOTSTRAP TYPOGRAPHY ── */
+    'text-start':   { kind:'bs', badge:'BS', desc:'Aligns text to the left.' },
+    'text-center':  { kind:'bs', badge:'BS', desc:'Centers text horizontally.' },
+    'text-end':     { kind:'bs', badge:'BS', desc:'Aligns text to the right.' },
+    'text-muted':   { kind:'bs', badge:'BS', desc:'Greys out text using Bootstrap\'s muted color.' },
+    'text-primary': { kind:'bs', badge:'BS', desc:'Colors text with Bootstrap\'s primary (blue) color.' },
+    'text-success': { kind:'bs', badge:'BS', desc:'Colors text green to indicate success.' },
+    'text-danger':  { kind:'bs', badge:'BS', desc:'Colors text red to indicate an error or danger.' },
+    'text-warning': { kind:'bs', badge:'BS', desc:'Colors text amber/orange as a warning.' },
+    'text-white':   { kind:'bs', badge:'BS', desc:'Forces white text color. Useful on dark backgrounds.' },
+    'text-dark':    { kind:'bs', badge:'BS', desc:'Forces dark text color.' },
+    'text-uppercase':    { kind:'bs', badge:'BS', desc:'Transforms all text to UPPERCASE.' },
+    'text-lowercase':    { kind:'bs', badge:'BS', desc:'Transforms all text to lowercase.' },
+    'text-capitalize':   { kind:'bs', badge:'BS', desc:'Capitalizes the first letter of each word.' },
+    'fw-bold':   { kind:'bs', badge:'BS', desc:'Sets font weight to bold (700).' },
+    'fw-normal': { kind:'bs', badge:'BS', desc:'Sets font weight to normal (400).' },
+    'fw-light':  { kind:'bs', badge:'BS', desc:'Sets font weight to light (300).' },
+    'fs-1': { kind:'bs', badge:'BS', desc:'Sets font size to the largest heading size (~2.5rem).' },
+    'fs-3': { kind:'bs', badge:'BS', desc:'Sets font size to heading-3 size (~1.75rem).' },
+    'fs-5': { kind:'bs', badge:'BS', desc:'Sets font size slightly larger than body text (~1.25rem).' },
+    'fs-6': { kind:'bs', badge:'BS', desc:'Sets font size to normal body text size (~1rem).' },
+    'lh-1': { kind:'bs', badge:'BS', desc:'Sets line-height to 1 (tight, no extra spacing).' },
+    /* ── BOOTSTRAP COMPONENTS ── */
+    navbar:         { kind:'bs', badge:'BS', desc:'Container for the navigation bar. Combine with navbar-expand-* and a color scheme.' },
+    'navbar-brand': { kind:'bs', badge:'BS', desc:'Styles the brand name or logo inside a navbar.' },
+    'navbar-nav':   { kind:'bs', badge:'BS', desc:'Holds navigation links inside a navbar.' },
+    'nav-item':     { kind:'bs', badge:'BS', desc:'A single navigation item in a Bootstrap navbar.' },
+    'nav-link':     { kind:'bs', badge:'BS', desc:'Styles an anchor as a navigation link with proper padding and hover states.' },
+    'navbar-toggler':{ kind:'bs', badge:'BS', desc:'The hamburger button that toggles the nav on mobile screens.' },
+    'navbar-collapse':{ kind:'bs', badge:'BS', desc:'The collapsible menu section in a navbar.' },
+    'navbar-expand-lg':{ kind:'bs', badge:'BS', desc:'Keeps navbar horizontal on large screens; collapses to hamburger on smaller.' },
+    'navbar-dark':  { kind:'bs', badge:'BS', desc:'Uses light-colored links and icons, designed for dark backgrounds.' },
+    'navbar-light': { kind:'bs', badge:'BS', desc:'Uses dark-colored links and icons, designed for light backgrounds.' },
+    card:           { kind:'bs', badge:'BS', desc:'A flexible container with padding and a border. Great for displaying content blocks.' },
+    'card-body':    { kind:'bs', badge:'BS', desc:'The main content area inside a Bootstrap card with padding.' },
+    'card-title':   { kind:'bs', badge:'BS', desc:'Styles a heading inside a card.' },
+    'card-text':    { kind:'bs', badge:'BS', desc:'Paragraph text inside a card body.' },
+    'card-header':  { kind:'bs', badge:'BS', desc:'Top section of a card, typically used for a title or tabs.' },
+    'card-footer':  { kind:'bs', badge:'BS', desc:'Bottom section of a card, often used for actions or metadata.' },
+    'card-img-top': { kind:'bs', badge:'BS', desc:'Image at the top of a card, with rounded top corners.' },
+    modal:          { kind:'bs', badge:'BS', desc:'A popup dialog overlay. Requires modal-dialog and modal-content children.' },
+    'modal-dialog': { kind:'bs', badge:'BS', desc:'Centers and constrains the modal panel.' },
+    'modal-content':{ kind:'bs', badge:'BS', desc:'The visible modal box containing header, body, and footer.' },
+    'modal-header': { kind:'bs', badge:'BS', desc:'Top section of a modal, typically with a title and close button.' },
+    'modal-body':   { kind:'bs', badge:'BS', desc:'Main content area of a modal.' },
+    'modal-footer': { kind:'bs', badge:'BS', desc:'Bottom action area of a modal, typically with buttons.' },
+    alert:          { kind:'bs', badge:'BS', desc:'A contextual feedback message box. Combine with alert-* color variants.' },
+    'alert-primary':  { kind:'bs', badge:'BS', desc:'Blue informational alert box.' },
+    'alert-success':  { kind:'bs', badge:'BS', desc:'Green success alert box.' },
+    'alert-danger':   { kind:'bs', badge:'BS', desc:'Red error or danger alert box.' },
+    'alert-warning':  { kind:'bs', badge:'BS', desc:'Yellow warning alert box.' },
+    badge:          { kind:'bs', badge:'BS', desc:'A small inline label/tag. Combine with bg-* for color. Example: badge bg-primary.' },
+    'bg-primary':   { kind:'bs', badge:'BS', desc:'Sets background color to Bootstrap primary blue.' },
+    'bg-success':   { kind:'bs', badge:'BS', desc:'Sets background color to Bootstrap green.' },
+    'bg-danger':    { kind:'bs', badge:'BS', desc:'Sets background color to Bootstrap red.' },
+    'bg-warning':   { kind:'bs', badge:'BS', desc:'Sets background color to Bootstrap yellow/amber.' },
+    'bg-dark':      { kind:'bs', badge:'BS', desc:'Sets background to Bootstrap dark (near-black).' },
+    'bg-light':     { kind:'bs', badge:'BS', desc:'Sets background to Bootstrap light grey.' },
+    'bg-white':     { kind:'bs', badge:'BS', desc:'Sets background to white.' },
+    'bg-transparent':{ kind:'bs', badge:'BS', desc:'Makes background transparent.' },
+    /* ── BOOTSTRAP UTILITIES ── */
+    'w-100':   { kind:'bs', badge:'BS', desc:'Sets width to 100%.' },
+    'w-75':    { kind:'bs', badge:'BS', desc:'Sets width to 75%.' },
+    'w-50':    { kind:'bs', badge:'BS', desc:'Sets width to 50%.' },
+    'w-25':    { kind:'bs', badge:'BS', desc:'Sets width to 25%.' },
+    'h-100':   { kind:'bs', badge:'BS', desc:'Sets height to 100%.' },
+    'rounded': { kind:'bs', badge:'BS', desc:'Adds slightly rounded corners.' },
+    'rounded-circle': { kind:'bs', badge:'BS', desc:'Makes the element fully circular (use with equal width/height).' },
+    'rounded-pill':   { kind:'bs', badge:'BS', desc:'Creates a pill-shaped element with very rounded ends.' },
+    'shadow':    { kind:'bs', badge:'BS', desc:'Adds a medium box-shadow to the element.' },
+    'shadow-sm': { kind:'bs', badge:'BS', desc:'Adds a subtle small box-shadow.' },
+    'shadow-lg': { kind:'bs', badge:'BS', desc:'Adds a large, prominent box-shadow.' },
+    'shadow-none':{ kind:'bs', badge:'BS', desc:'Removes any box-shadow.' },
+    'border':    { kind:'bs', badge:'BS', desc:'Adds a 1px solid border using Bootstrap\'s default border color.' },
+    'border-0':  { kind:'bs', badge:'BS', desc:'Removes all borders.' },
+    'border-top':    { kind:'bs', badge:'BS', desc:'Adds a top border only.' },
+    'border-bottom': { kind:'bs', badge:'BS', desc:'Adds a bottom border only.' },
+    'border-primary':{ kind:'bs', badge:'BS', desc:'Colors the border with Bootstrap\'s primary blue.' },
+    'overflow-hidden':  { kind:'bs', badge:'BS', desc:'Clips content that exceeds the element\'s bounds.' },
+    'overflow-auto':    { kind:'bs', badge:'BS', desc:'Adds scrollbars only when content overflows.' },
+    'overflow-scroll':  { kind:'bs', badge:'BS', desc:'Always shows scrollbars on the element.' },
+    'position-relative':{ kind:'bs', badge:'BS', desc:'Sets position to relative.' },
+    'position-absolute':{ kind:'bs', badge:'BS', desc:'Sets position to absolute.' },
+    'position-fixed':   { kind:'bs', badge:'BS', desc:'Fixes element to the viewport.' },
+    'position-sticky':  { kind:'bs', badge:'BS', desc:'Sticks element when scrolled to its threshold.' },
+    'top-0':    { kind:'bs', badge:'BS', desc:'Sets top edge to 0 (use with position utilities).' },
+    'bottom-0': { kind:'bs', badge:'BS', desc:'Anchors element to the bottom.' },
+    'start-0':  { kind:'bs', badge:'BS', desc:'Anchors element to the left edge.' },
+    'end-0':    { kind:'bs', badge:'BS', desc:'Anchors element to the right edge.' },
+    'gap-1': { kind:'bs', badge:'BS', desc:'Sets flex/grid gap to 0.25rem.' },
+    'gap-2': { kind:'bs', badge:'BS', desc:'Sets flex/grid gap to 0.5rem.' },
+    'gap-3': { kind:'bs', badge:'BS', desc:'Sets flex/grid gap to 1rem.' },
+    'gap-4': { kind:'bs', badge:'BS', desc:'Sets flex/grid gap to 1.5rem.' },
+    'g-3':   { kind:'bs', badge:'BS', desc:'Sets grid gutter (space between columns and rows) to 1rem.' },
+    'gx-3':  { kind:'bs', badge:'BS', desc:'Sets horizontal gutter (column spacing) to 1rem.' },
+    'gy-3':  { kind:'bs', badge:'BS', desc:'Sets vertical gutter (row spacing) to 1rem.' },
+    'img-fluid': { kind:'bs', badge:'BS', desc:'Makes an image responsive — max-width: 100% and height: auto.' },
+    'img-thumbnail': { kind:'bs', badge:'BS', desc:'Gives an image a thumbnail look with border and padding.' },
+    'visually-hidden': { kind:'bs', badge:'BS', desc:'Hides content visually but keeps it accessible to screen readers.' },
+    'sr-only':   { kind:'bs', badge:'BS', desc:'Legacy class (Bootstrap 4). Hides visually but keeps accessible. Use visually-hidden in BS5.' },
+    'input-group': { kind:'bs', badge:'BS', desc:'Wraps inputs with addons (like buttons or text) side by side.' },
+    'form-control':{ kind:'bs', badge:'BS', desc:'Styles a form input, textarea, or select with full-width and Bootstrap styling.' },
+    'form-label':  { kind:'bs', badge:'BS', desc:'Styles a form label with proper bottom margin.' },
+    'form-select': { kind:'bs', badge:'BS', desc:'Styles a native select element with Bootstrap look.' },
+    'form-check':  { kind:'bs', badge:'BS', desc:'Wraps a checkbox or radio with proper spacing and alignment.' },
+    'form-check-input':  { kind:'bs', badge:'BS', desc:'Styles the checkbox or radio input inside a form-check.' },
+    'form-check-label':  { kind:'bs', badge:'BS', desc:'Styles the label inside a form-check.' },
+    'is-invalid':  { kind:'bs', badge:'BS', desc:'Marks a form field as invalid with a red border and feedback styling.' },
+    'is-valid':    { kind:'bs', badge:'BS', desc:'Marks a form field as valid with a green border.' },
+    'invalid-feedback': { kind:'bs', badge:'BS', desc:'Error message shown below an invalid form field.' },
+    table:          { kind:'bs', badge:'BS', desc:'Base Bootstrap table class. Adds basic spacing and borders to a table element.' },
+    'table-striped':{ kind:'bs', badge:'BS', desc:'Adds zebra striping (alternating row backgrounds) to the table.' },
+    'table-bordered':{ kind:'bs', badge:'BS', desc:'Adds borders to all cells and the table edge.' },
+    'table-hover':  { kind:'bs', badge:'BS', desc:'Highlights table rows on hover.' },
+    'table-dark':   { kind:'bs', badge:'BS', desc:'Applies dark background and light text to the table.' },
+    'table-responsive': { kind:'bs', badge:'BS', desc:'Wraps table to enable horizontal scrolling on small screens.' },
+    list:           { kind:'bs', badge:'BS', desc:'Generic list element. Use list-group for Bootstrap-styled lists.' },
+    'list-group':   { kind:'bs', badge:'BS', desc:'Displays items in a vertical list with borders and padding.' },
+    'list-group-item': { kind:'bs', badge:'BS', desc:'A single item inside a list-group.' },
+    'list-unstyled':{ kind:'bs', badge:'BS', desc:'Removes default list bullets and padding from a \u003cul\u003e or \u003col\u003e.' },
+    'list-inline':  { kind:'bs', badge:'BS', desc:'Displays list items inline (side by side).' },
+    'list-inline-item': { kind:'bs', badge:'BS', desc:'An inline list item inside a list-inline.' },
+    breadcrumb:      { kind:'bs', badge:'BS', desc:'Navigation breadcrumb trail.' },
+    'breadcrumb-item': { kind:'bs', badge:'BS', desc:'A single step in a breadcrumb trail.' },
+    pagination:      { kind:'bs', badge:'BS', desc:'Paged navigation component.' },
+    'page-item':     { kind:'bs', badge:'BS', desc:'A single page link inside pagination.' },
+    'page-link':     { kind:'bs', badge:'BS', desc:'Styles the anchor inside a page-item.' },
+    progress:        { kind:'bs', badge:'BS', desc:'Progress bar container. Add a progress-bar child with inline width style.' },
+    'progress-bar':  { kind:'bs', badge:'BS', desc:'The colored fill bar inside a progress container.' },
+    spinner:           { kind:'bs', badge:'BS', desc:'Animated loading indicator. Use spinner-border or spinner-grow.' },
+    'spinner-border':  { kind:'bs', badge:'BS', desc:'Circular spinning border loading indicator.' },
+    'spinner-grow':    { kind:'bs', badge:'BS', desc:'Pulsing circle loading indicator.' },
+    tooltip:         { kind:'bs', badge:'BS', desc:'Bootstrap tooltip component triggered via data-bs-toggle="tooltip".' },
+    popover:         { kind:'bs', badge:'BS', desc:'Bootstrap popover — a larger tooltip with a title and body.' },
+    collapse:        { kind:'bs', badge:'BS', desc:'Toggleable hidden content. Link with data-bs-toggle="collapse".' },
+    accordion:       { kind:'bs', badge:'BS', desc:'Stack of collapsible sections. Built with accordion-item children.' },
+    'accordion-item':{ kind:'bs', badge:'BS', desc:'A single collapsible panel inside an accordion.' },
+    'accordion-header': { kind:'bs', badge:'BS', desc:'The clickable heading of an accordion item.' },
+    'accordion-body': { kind:'bs', badge:'BS', desc:'The content revealed when an accordion item is open.' },
+    carousel:        { kind:'bs', badge:'BS', desc:'Image/content slider component.' },
+    tab:             { kind:'bs', badge:'BS', desc:'Bootstrap tab navigation. Use with nav-tabs and data-bs-toggle="tab".' },
+    'nav-tabs':      { kind:'bs', badge:'BS', desc:'Styles a navigation list as horizontal tabs.' },
+    'nav-pills':     { kind:'bs', badge:'BS', desc:'Styles a navigation list as pill-shaped buttons.' },
+    'tab-content':   { kind:'bs', badge:'BS', desc:'Container for tab panels.' },
+    'tab-pane':      { kind:'bs', badge:'BS', desc:'A single panel inside tab-content.' },
+    dropdown:        { kind:'bs', badge:'BS', desc:'A toggleable dropdown menu. Add dropdown-menu child.' },
+    'dropdown-menu': { kind:'bs', badge:'BS', desc:'The popup list of links inside a dropdown.' },
+    'dropdown-item': { kind:'bs', badge:'BS', desc:'A single link or button inside a dropdown-menu.' },
+    'dropdown-toggle':{ kind:'bs', badge:'BS', desc:'The trigger element that opens a dropdown (adds a caret).' },
+    toast:           { kind:'bs', badge:'BS', desc:'Lightweight notification that appears briefly. Auto-dismiss supported.' },
+    'toast-header':  { kind:'bs', badge:'BS', desc:'Top section of a toast with title and close button.' },
+    'toast-body':    { kind:'bs', badge:'BS', desc:'Main message content of a toast.' },
+    offcanvas:       { kind:'bs', badge:'BS', desc:'A panel that slides in from the edge of the screen.' },
+    /* ── BOOTSTRAP BREAKPOINTS ── */
+    'xs': { kind:'bs', badge:'BS', desc:'Extra-small breakpoint: <576px. Default (no suffix) in Bootstrap.' },
+    'sm': { kind:'bs', badge:'BS', desc:'Small breakpoint: ≥576px.' },
+    'md': { kind:'bs', badge:'BS', desc:'Medium breakpoint: ≥768px. Common tablet target.' },
+    'lg': { kind:'bs', badge:'BS', desc:'Large breakpoint: ≥992px. Common desktop target.' },
+    'xl': { kind:'bs', badge:'BS', desc:'Extra-large breakpoint: ≥1200px.' },
+    'xxl':{ kind:'bs', badge:'BS', desc:'Extra-extra-large breakpoint: ≥1400px.' },
     parseFloat:   { kind:'js', badge:'JS', desc:'Parses a string and returns a floating-point number. Stops at the first invalid character. Returns NaN on failure.', example:"parseFloat('3.14abc')  // 3.14\nparseFloat('xyz')      // NaN" },
   };
 
-  /* Normalize CSS/JS camelCase → hyphen-case lookups */
+  /* Normalize lookups: handles camelCase, lowercase, and hyphenated BS classes */
   function normalize(word) {
-    // Try exact match first
+    if (!word) return null;
+    // Exact match
     if (KB[word]) return word;
-    // camelCase → try as-is (our KB already has camelCase keys)
-    // Also try lowercase
-    if (KB[word.toLowerCase()]) return word.toLowerCase();
+    // Lowercase
+    const lower = word.toLowerCase();
+    if (KB[lower]) return lower;
+    // Strip leading dot (e.g. ".container" → "container")
+    const stripped = lower.replace(/^\./, '');
+    if (KB[stripped]) return stripped;
     return null;
   }
 
@@ -3044,7 +3375,7 @@ tick(); setInterval(tick,1000);`
     const pos   = ta.selectionStart;
     if (pos === null) return null;
 
-    // Walk left to find word start
+    // Walk left to find word start — include hyphens for Bootstrap class names
     let start = pos;
     while (start > 0 && /[\w\-]/.test(val[start - 1])) start--;
     // Walk right to find word end
@@ -3053,7 +3384,7 @@ tick(); setInterval(tick,1000);`
 
     if (end === start) return null;
     const word = val.slice(start, end);
-    if (word.length < 2) return null;
+    if (word.length < 1) return null;
     return word;
   }
 
@@ -3119,36 +3450,41 @@ tick(); setInterval(tick,1000);`
     } catch(e) { return null; }
   }
 
-  function scheduleLookup(ta, eventType) {
+  function scheduleLookup(ta, eventType, overrideCoords) {
     clearTimeout(lookupTimer);
-    const delay = eventType === 'select' ? 150 : 400;
+    // Fast for selection/click, very fast for keyup
+    const delay = eventType === 'select' ? 80 : eventType === 'keyup' ? 100 : 60;
     lookupTimer = setTimeout(async () => {
       if (!enabled) return;
-      const word = eventType === 'select'
-        ? getSelectedWord(ta)
+      const word = (eventType === 'select' || eventType === 'hover')
+        ? getSelectedWord(ta) || getWordAtCursor(ta)
         : getWordAtCursor(ta);
       if (!word) { hideTooltip(false); return; }
 
-      // Check local KB first
+      // Check local KB first (instant)
       const key   = normalize(word);
       const entry = key ? KB[key] : null;
+      // Use mouse position for selections (more accurate), caret coords for typing
+      const useMouseCoords = (eventType === 'select' || eventType === 'hover');
+      const coords = overrideCoords || (useMouseCoords
+        ? { x: lastMouseX, y: lastMouseY }
+        : getCaretCoords(ta));
+
       if (entry) {
         currentWord = word;
-        const coords = getCaretCoords(ta);
         showTooltip(entry, word, coords.x, coords.y);
         return;
       }
 
-      // For any selected word, use AI
-      if (eventType === 'select') {
+      // For selected text, use AI definition
+      if (eventType === 'select' || eventType === 'hover') {
+        if (currentWord === word) return; // already showing
         currentWord = word;
-        const coords = getCaretCoords(ta);
-        // Show loading state immediately
         showTooltip({ kind:'ai', badge:'AI', desc:'Defining…', example: null }, word, coords.x, coords.y);
         const def = await defineWithAI(word);
         if (def && currentWord === word) {
           showTooltip({ kind:'ai', badge:'DEF', desc: def, example: null }, word, coords.x, coords.y);
-        } else if (!def) {
+        } else if (!def && currentWord === word) {
           hideTooltip(false);
         }
       } else {
@@ -3159,16 +3495,15 @@ tick(); setInterval(tick,1000);`
 
   /* ── Attach listeners to all editor textareas ── */
   function attachToTextarea(ta) {
-    ta.addEventListener('keyup',         () => scheduleLookup(ta, 'keyup'));
-    ta.addEventListener('click',         () => scheduleLookup(ta, 'click'));
-    ta.addEventListener('select',        () => scheduleLookup(ta, 'select'));
-    ta.addEventListener('mouseup',       () => scheduleLookup(ta, 'select'));
-    ta.addEventListener('keydown',       (e) => {
-      // Only hide on Escape or navigation keys, not regular typing
+    ta.addEventListener('keyup',   () => scheduleLookup(ta, 'keyup'));
+    ta.addEventListener('click',   () => scheduleLookup(ta, 'click'));
+    ta.addEventListener('select',  () => scheduleLookup(ta, 'select'));
+    ta.addEventListener('mouseup', () => scheduleLookup(ta, 'select'));
+    ta.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { currentWord = ''; hideTooltip(true); }
     });
-    ta.addEventListener('blur',          () => hideTooltip(false));
-    ta.addEventListener('scroll',        () => hideTooltip(true));
+    ta.addEventListener('blur',    () => hideTooltip(false));
+    ta.addEventListener('scroll',  () => hideTooltip(true));
   }
 
   /* Attach to all textareas */
@@ -3187,6 +3522,70 @@ tick(); setInterval(tick,1000);`
   });
 
 })(); // end intellisenseModule
+
+/* ============================================================
+   VS CODE FORMATTER MODULE
+============================================================ */
+(function vscodeFormatModule() {
+  const cpHtml = document.getElementById('cp-html');
+  const cpCss  = document.getElementById('cp-css');
+  const cpJs   = document.getElementById('cp-js');
+  const btn    = document.getElementById('cp-format-btn');
+  if (!btn) return;
+
+  function formatHTML(html) {
+    let indent = 0;
+    const tab = '  ';
+    const voids = new Set(['area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr']);
+    const pre   = new Set(['pre','textarea','script','style']);
+    let result = [];
+    let inPre = false;
+    // Normalize: split on tags
+    const tokens = html.replace(/>\s*</g, '>\n<').split('\n');
+    for (let raw of tokens) {
+      const line = raw.trim();
+      if (!line) continue;
+      if (inPre) { result.push(line); if (/<\/(pre|textarea|script|style)>/i.test(line)) inPre=false; continue; }
+      const closeTag  = line.match(/^<\/([a-zA-Z][^\s>]*)/);
+      const openTag   = line.match(/^<([a-zA-Z][^\s>\/]*)/);
+      const selfClose = line.endsWith('/>') || (openTag && voids.has((openTag[1]||'').toLowerCase()));
+      const isComment = line.startsWith('<!--');
+      const isDTD     = line.startsWith('<!');
+      if (closeTag && !selfClose) { indent = Math.max(0, indent - 1); }
+      result.push(tab.repeat(indent) + line);
+      if (openTag && !selfClose && !isComment && !isDTD) {
+        const tag = (openTag[1]||'').toLowerCase();
+        if (!voids.has(tag) && !line.includes('</' + tag)) indent++;
+        if (pre.has(tag)) inPre = true;
+      }
+    }
+    return result.join('\n');
+  }
+
+  function formatCSS(css) {
+    let s = css
+      .replace(/\s*\{\s*/g, ' {\n  ')
+      .replace(/;\s*/g, ';\n  ')
+      .replace(/\s*\}\s*/g, '\n}\n')
+      .replace(/  \n\}/g, '\n}')
+      .replace(/:\s*/g, ': ')
+      .replace(/,\s*/g, ', ')
+      .replace(/\n{3,}/g, '\n\n');
+    return s.trim();
+  }
+
+  function formatJS(js) {
+    let s = js
+      .replace(/\bfunction\b\s*([^\(]*)\s*\(/g, 'function $1(')
+      .replace(/\)\s*\{/g, ') {')
+      .replace(/\}\s*else\s*\{/g, '} else {')
+      .replace(/\}\s*else\s+if/g, '} else if')
+      .replace(/\s*;\s*/g, ';\n')
+      .replace(/\n{3,}/g, '\n\n');
+    return s.trim();
+  }
+
+  })(); // end vscodeFormatModule
 </script>
 </body>
 </html>
